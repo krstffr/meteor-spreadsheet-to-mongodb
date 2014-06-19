@@ -1,0 +1,9 @@
+{
+  "name": "spreadsheet-to-mongodb",
+  "description": "Copy a spreadsheet into a textarea and store the data in mongodb.",
+  "homepage": "https://github.com/krstffr/meteor-spreadsheet-to-mongodb",
+  "author": "Kristoffer Klintberg <krstffr@gmail.com>",
+  "version": "0.0.1",
+  "git": "https://github.com/krstffr/meteor-spreadsheet-to-mongodb.git",
+  "packages": {}
+}
