@@ -6,10 +6,11 @@ Well, with this package, just copy and paste the spreadsheet into a textarea and
 
 ## Here's how to make it work.
 
-1. Create a startup file which is available on both the server and the client (maybe in a both/ directory).
-1. Create a `javascript Meteor.startup(function () {});` in the file.
-1. Inside the startup callback, set some options which describes the data which is in the spreadsheet you're copying from:
+- Create a startup file which is available on both the server and the client (maybe in a both/ directory).
+- Create a `javascript Meteor.startup(function () {});` in the file.
+- Inside the startup callback, set some options which describes the data which is in the spreadsheet you're copying from:
 ```javascript
+
 
 	// Holder for all options (an array)
 	var options = [];
@@ -62,8 +63,7 @@ Well, with this package, just copy and paste the spreadsheet into a textarea and
 	spreadsheetToMongoDB = new SpreadsheetToMongoDB( options );
 
 ```
-
-1. Now you're all set up. Now you just need the actual form to paste your spreadsheets into. Use this handlebars helper to get the field:
+- Now you're all set up. Now you just need the actual form to paste your spreadsheets into. Use this handlebars helper to get the field:
 `{{{ spreadsheetToMongoDBGetForm 'bankStatements' }}}`
-1. Now you've got the form in your HTML, and when you copy/paste the spreadsheet data it will be stored in your mongodb.
-1. If you've set up fields with the `idpart: true` key then you can paste the data multiple times and be sure that you only get one doc/row in your spreadsheet, as the saving is done using .upsert(). (This might still be quite hard to grasp.)
+- Now you've got the form in your HTML, and when you copy/paste the spreadsheet data it will be stored in your mongodb.
+- If you've set up fields with the `idpart: true` key then you can paste the data multiple times and be sure that you only get one doc/row in your spreadsheet, as the saving is done using .upsert(). (This might still be quite hard to grasp.)
