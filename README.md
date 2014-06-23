@@ -4,6 +4,10 @@ Maybe you have a spreadsheet with lot's of data you want to use in your Meteor.j
 
 Well, with this package, just copy and paste the spreadsheet into a textarea and press and button, and it's there, right in your database.
 
+## Super simple demo
+
+[http://spreadsheet-to-mongodb.meteor.com./](Check out the demo at spreadsheet-to-mongodb.meteor.com).
+
 ## Here's how to make it work.
 
 - Install the package: `mrt add spreadsheet-to-mongodb`.
