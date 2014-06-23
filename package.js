@@ -4,9 +4,12 @@ Package.describe({
 
 Package.on_use(function (api) {
 
+	api.use('templating', 'client');
+
 	api.add_files('lib/external/jquery.csv-0.71.min.js', ['client']);
   api.add_files('lib/spreadsheet-to-mongodb.js', ['client', 'server']);
   api.add_files('lib/spreadsheet-to-mongodb-server-methods.js', ['server']);
+  api.add_files('lib/spreadsheet-to-mongodb-handlebars-helpers.js', ['client']);
 
   if (typeof api.export !== 'undefined') {
 
