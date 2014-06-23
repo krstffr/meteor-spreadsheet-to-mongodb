@@ -6,7 +6,9 @@ Well, with this package, just copy and paste the spreadsheet into a textarea and
 
 ## Super simple demo
 
-[http://spreadsheet-to-mongodb.meteor.com./](Check out the demo at spreadsheet-to-mongodb.meteor.com).
+Check out a demo here: http://spreadsheet-to-mongodb.meteor.com/
+
+Use this spreadsheet format for adding data: https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw/edit#gid=0
 
 ## Here's how to make it work.
 
