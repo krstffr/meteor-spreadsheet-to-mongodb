@@ -6,9 +6,8 @@ Well, with this package, just copy and paste the spreadsheet into a textarea and
 
 ## Here's how to make it work.
 
-- Create a startup file which is available on both the server and the client (maybe in a both/ directory).
-- Create a `javascript Meteor.startup(function () {});` in the file.
-- Inside the startup callback, set some options which describes the data which is in the spreadsheet you're copying from:
+- Create a file which is available on both the server and the client (maybe in a both/ directory).
+- Inside, set some options which describes the data which is in the spreadsheet you're copying from:
 ```javascript
 
 
