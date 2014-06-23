@@ -6,6 +6,7 @@ Well, with this package, just copy and paste the spreadsheet into a textarea and
 
 ## Here's how to make it work.
 
+- Install the package: `mrt add spreadsheet-to-mongodb`.
 - Create a file which is available on both the server and the client (maybe in a both/ directory).
 - Inside, set some options which describes the data which is in the spreadsheet you're copying from:
 ```javascript
