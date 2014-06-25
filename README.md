@@ -73,3 +73,4 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 `{{{ spreadsheetToMongoDBGetForm 'bankStatements' }}}`
 - Now you've got the form in your HTML, and when you copy/paste the spreadsheet data it will be stored in your mongodb.
 - If you've set up fields with the `idpart: true` key then you can paste the data multiple times and be sure that you only get one doc/row in your spreadsheet, as the saving is done using .upsert(). (This might still be quite hard to grasp.)
+- If you want to display the "schema" (correct term?) for the form, then pass an options object to the `{{{ spreadsheetToMongoDBGetForm }}}` helper, with { showSchema: true }. Then the scehma will be displayed above the form. So, the cleanest way to this would be ``` {{{ spreadsheetToMongoDBGetForm formName options }}} ``` where you set the formName and options in .js instead of directly in the template.
