@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "spreadsheet-to-mongodb": {
+        "path": "../.."
+      }
+    },
+    "packages": {
+      "spreadsheet-to-mongodb": {
+        "path": "../.."
+      }
+    }
+  }
+}

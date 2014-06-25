@@ -1,0 +1,47 @@
+<head>
+	<title>Spreadsheet to mongoDB demo!</title>
+</head>
+
+<body>
+	{{> hello}}
+</body>
+
+<template name="hello">
+
+	<h1>spreadsheetToMongoDB demo.</h1>
+
+	<p>
+		This is a demo for the <a href="https://github.com/krstffr/meteor-spreadsheet-to-mongodb">Spreadsheet-to-mongoDB meteor.js package.</a><br />
+		Install it into your own app using: <code>mrt add spreadsheet-to-mongodb</code>.
+	</p>
+
+	<p>
+		Use this data format: <a href="https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw">https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw/edit#gid=0</a>.
+	</p>
+	<p>
+		Just copy data from the form into the textarea below and hit 'save'. Voila, data is saved (upserted)!
+	</p>
+
+	<h3>
+		Output of the handlebars <code>spreadsheetToMongoDBGetForm</code> helper below:
+	</h3>
+
+	<hr>
+
+	{{{ spreadsheetToMongoDBGetForm 'sillyExample' options }}}
+
+	<hr>
+
+	<p>Here the stored data is listed (limit 25):</p>
+
+	<ul>
+
+	{{#each example }}
+
+		<li>{{ name }} loves: {{ favoriteFruit }} and: {{ favoriteVideoGame }}. Born in {{ dateOfBirth }}, he/she now has $ {{ money }} money.</li>
+
+	{{/each}}
+
+	</ul>
+
+</template>

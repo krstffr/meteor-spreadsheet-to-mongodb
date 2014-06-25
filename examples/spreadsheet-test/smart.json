@@ -1,0 +1,7 @@
+{
+  "packages": {
+    "spreadsheet-to-mongodb": {
+    	"path": "../../../meteor-spreadsheet-to-mongodb"
+    }
+  }
+}
