@@ -1,4 +1,4 @@
-# Spreadsheet-to-mongoDB for meteor.js 
+# Spreadsheet-to-mongoDB for meteor.js [![Build Status](https://travis-ci.org/krstffr/meteor-spreadsheet-to-mongodb.svg)](https://travis-ci.org/krstffr/meteor-spreadsheet-to-mongodb)
 
 Maybe you have a spreadsheet with lot's of data you want to use in your Meteor.js application. You'd probably want to store it in mongodb. How would you do that?
 
