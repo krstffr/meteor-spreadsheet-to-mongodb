@@ -3,3 +3,23 @@ textarea {
 	width: 100%;
 	min-height: 400px;
 }
+pre,
+.SpreadsheetToMongoDB__form {
+	background: #f5f5f5;
+	padding: 1.5em;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	line-height: 1.4;
+}
+.SpreadsheetToMongoDB__form label {
+	padding: 0 0 .5em;
+	display: block;
+}
+.SpreadsheetToMongoDB__form__field-name {
+	border-right: 1px solid;
+	padding-right: 1em;
+	margin-right: 0.75em;
+}
+.SpreadsheetToMongoDB__form__field-name:last-child {
+	border-right: none;
+}

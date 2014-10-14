@@ -22,9 +22,6 @@ if (Meteor.isClient) {
   });
 
   Template.hello.helpers({
-    options: function () {
-      return { showSchema: true };
-    },
     example: function () {
       return SillyCollection.find();
     }

@@ -1,4 +1,4 @@
-# Spreadsheet-to-mongoDB for meteor.js
+# Spreadsheet-to-mongoDB for meteor.js 
 
 Maybe you have a spreadsheet with lot's of data you want to use in your Meteor.js application. You'd probably want to store it in mongodb. How would you do that?
 
@@ -12,26 +12,21 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 
 ## Here's how to make it work.
 
-- Install the package: `mrt add spreadsheet-to-mongodb`.
-- Create a file which is available on both the server and the client (maybe in a both/ directory).
-- Inside, set some options which describes the data which is in the spreadsheet you're copying from:
+- Install the package: `mrt add krstffr:spreadsheet-to-mongodb`.
+- Create a file which is available on both the server and the client.
+- Set some options for the new "form" which will accept your spreadsheet data:
 ```javascript
-
-
-	// Holder for all options (an array)
-	var options = [];
 
 	// This is for a spreadsheet holding bank statements (if that's what they're called in english).
 	// We push it into the options array.
-	options.push({
+	var formOptions = {
 		// Set a name for this specific "spreadsheet"
-		name: 'bankStatements',
+		formName: 'bankStatements',
 		// Pass the collection in which you want to store the data inside
+		// Note! This collection has to be defined by you!
 		collection: BankStatements,
-		// Should we pass the current users _id to every document? If not, just ignore setting this.
-		addUserId: true,
 		// Should we pass part of the current users _id to the documents _id?
-		// (This one needs more explaingin!)
+		// (This one needs more explaining!)
 		addUserIdToId: true,
 		// The fields, in the order they appear in the spreadsheet.
 		fields: [
@@ -46,8 +41,10 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 			// (This might be super hard to understand. Needs more work.)
 			idpart: true,
 			// What kind of data should be stored? Currently only 'number' and 'date' are supported.
+			// (All other fields will be saved as strings.)
 			type: 'date',
-			// Is this field required? Meaning: if it's not set an error will be thrown.
+			// Is this field required? Meaning: if it's not set when submitting the spreadsheet
+			// data an error will be thrown.
 			required: true,
 			// This sets a default value for docs.
 			// (In this case, it kind of negates the use of required: true as if there is no value set then
@@ -63,14 +60,13 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 		{ name: 'commentUser' },
 		{ name: 'REMOVE' }
 		]
-	});
+	};
 	
-	// Initialise
-	spreadsheetToMongoDB = new SpreadsheetToMongoDB( options );
+	// Add the form!
+	SpreadsheetToMongoDB.addForm( formOptions );
 
 ```
-- Now you're all set up. Now you just need the actual form to paste your spreadsheets into. Use this handlebars helper to get the field:
-`{{{ spreadsheetToMongoDBGetForm 'bankStatements' }}}`
+- Now you're all set up. Now you just need the actual form to paste your spreadsheets into. Use this handlebars helper to get the field (use the formName to select what form to get!):
+`{{> spreadsheetToMongodb__form 'bankStatements' }}`
 - Now you've got the form in your HTML, and when you copy/paste the spreadsheet data it will be stored in your mongodb.
 - If you've set up fields with the `idpart: true` key then you can paste the data multiple times and be sure that you only get one doc/row in your spreadsheet, as the saving is done using .upsert(). (This might still be quite hard to grasp.)
-- If you want to display the "schema" (correct term?) for the form, then pass an options object to the `{{{ spreadsheetToMongoDBGetForm }}}` helper, with { showSchema: true }. Then the scehma will be displayed above the form. So, the cleanest way to this would be ``` {{{ spreadsheetToMongoDBGetForm formName options }}} ``` where you set the formName and options in .js instead of directly in the template.

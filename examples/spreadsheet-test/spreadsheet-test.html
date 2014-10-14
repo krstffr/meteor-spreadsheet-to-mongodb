@@ -12,25 +12,44 @@
 
 	<p>
 		This is a demo for the <a href="https://github.com/krstffr/meteor-spreadsheet-to-mongodb">Spreadsheet-to-mongoDB meteor.js package.</a><br />
-		Install it into your own app using: <code>mrt add spreadsheet-to-mongodb</code>.
+		Install it into your own app using: <code>mrt add krstffr:spreadsheet-to-mongodb</code>.
 	</p>
 
 	<p>
 		Use this data format: <a href="https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw">https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw/edit#gid=0</a>.
 	</p>
 	<p>
-		Just copy data from the form into the textarea below and hit 'save'. Voila, data is saved (upserted)!
+		Just copy data from the form into the textarea below and hit 'Save spreadsheet data'. Voila, data is saved (upserted)!
 	</p>
 
-	<h3>
-		Output of the handlebars <code>spreadsheetToMongoDBGetForm</code> helper below:
-	</h3>
+	<p>
+		The form is set up like this (on both the server and the client):
+		<pre>SillyCollection = new Meteor.Collection('sillyCollection');
 
-	<hr>
+var newFormOptions = {
+  formName: 'sillyExample',
+  collection: SillyCollection,
+  fields: [
+  { name: 'name', idpart: true, required: true },
+  { name: 'favoriteFruit', idpart: true },
+  { name: 'favoriteVideoGame', idpart: true, required: true },
+  { name: 'REMOVE' },
+  { name: 'dateOfBirth', type: 'date' },
+  { name: 'money', type: 'number', defaultValue: 5000 }
+  ]
+};
+
+SpreadsheetToMongoDB.addForm( newFormOptions );
+</pre>
+	</p>
+
+	<p>
+		And to output the form just add this in an HTML template:
+		<pre>&#123;&#123;> spreadsheetToMongodb__form 'sillyExample' &#125;&#125;</pre>
+		The result of this is seen below:
+	</p>
 
 	{{> spreadsheetToMongodb__form 'sillyExample' }}
-
-	<hr>
 
 	<p>Here the stored data is listed (limit 25):</p>
 
