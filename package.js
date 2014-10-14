@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Copy a spreadsheet into a textarea and store the data in mongodb.",
   name: "krstffr:spreadsheet-to-mongodb",
-  version: "1.0.1",
+  version: "1.0.2",
   git: "https://github.com/krstffr/meteor-spreadsheet-to-mongodb.git"
 });
 
