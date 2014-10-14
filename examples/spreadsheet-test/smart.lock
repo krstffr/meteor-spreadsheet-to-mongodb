@@ -2,12 +2,12 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "spreadsheet-to-mongodb": {
+      "krstffr:spreadsheet-to-mongodb": {
         "path": "../.."
       }
     },
     "packages": {
-      "spreadsheet-to-mongodb": {
+      "krstffr:spreadsheet-to-mongodb": {
         "path": "../.."
       }
     }

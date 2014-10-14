@@ -1,9 +1,7 @@
 SillyCollection = new Meteor.Collection('sillyCollection');
 
-var options = [];
-
-options.push({
-  name: 'sillyExample',
+var newFormOptions = {
+  formName: 'sillyExample',
   collection: SillyCollection,
   fields: [
   { name: 'name', idpart: true, required: true },
@@ -11,11 +9,11 @@ options.push({
   { name: 'favoriteVideoGame', idpart: true, required: true },
   { name: 'REMOVE' },
   { name: 'dateOfBirth', type: 'date' },
-  { name: 'money', type: 'number' }
+  { name: 'money', type: 'number', defaultValue: 5000 }
   ]
-});
+};
 
-spreadsheetToMongoDB = new SpreadsheetToMongoDB( options );
+SpreadsheetToMongoDB.addForm( newFormOptions );
 
 if (Meteor.isClient) {
 

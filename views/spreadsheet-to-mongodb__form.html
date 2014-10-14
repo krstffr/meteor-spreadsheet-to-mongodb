@@ -1,0 +1,21 @@
+<template name="spreadsheetToMongodb__form">
+
+	{{#with form }}
+
+		<form class="SpreadsheetToMongoDB__form">
+
+			<label for="{{ formName }}__textarea">
+				{{#each fields }}
+					<span class="SpreadsheetToMongoDB__form__field-name">{{ name }}</span>
+				{{/each}}
+			</label>
+
+			<textarea class="SpreadsheetToMongoDB__form__textarea" id="{{ formName }}__textarea"></textarea>
+
+			<input type="submit" value="Save spreadsheet data.">
+
+		</form>
+
+	{{/with}}
+
+</template>
