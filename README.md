@@ -55,6 +55,9 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 		// For cols in your spreadsheet which you don't want to store, just set the name to 'REMOVE'
 		// and they won't be stored.
 		{ name: 'REMOVE' },
+		// The threeValuesInAnArray will be saved as an array, and it is separated by commas in your spreadsheet.
+		// The arrayMaxLength: 3 makes sure only three items are stored.
+		{ name: 'threeValuesInAnArray', type: 'array', arrayMaxLength: 3 },
 		{ name: 'amount', type: 'number', idpart: true, required: true },
 		{ name: 'sum', type: 'number' },
 		{ name: 'commentUser' },
