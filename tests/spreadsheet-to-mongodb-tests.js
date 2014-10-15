@@ -107,7 +107,7 @@ Tinytest.add('Spreadsheet To MongoDB - getFormByName( formName )', function (tes
 
 });
 
-Tinytest.add('Spreadsheet To MongoDB Client - .types numbers should be numbers', function (test) {
+Tinytest.add('Spreadsheet To MongoDB Client - .types numbers: should be numbers', function (test) {
 
 	var formFields = [{
 		name: 'age',
@@ -137,7 +137,7 @@ Tinytest.add('Spreadsheet To MongoDB Client - .types numbers should be numbers',
 
 });
 
-Tinytest.add('Spreadsheet To MongoDB Client - .types dates should be dates', function (test) {
+Tinytest.add('Spreadsheet To MongoDB Client - .types dates: should be dates', function (test) {
 
 	var formFields = [{
 		name: 'birthDate',
@@ -165,7 +165,7 @@ Tinytest.add('Spreadsheet To MongoDB Client - .types dates should be dates', fun
 
 });
 
-Tinytest.add('Spreadsheet To MongoDB Client - .types arrays should be arrays', function (test) {
+Tinytest.add('Spreadsheet To MongoDB Client - .types arrays: should be arrays', function (test) {
 
 	var formFields = [{
 		name: 'listOfThings',
@@ -197,6 +197,35 @@ Tinytest.add('Spreadsheet To MongoDB Client - .types arrays should be arrays', f
 	test.equal( inputRow.listOfThings[3], 564 );
 	test.equal( inputRow.listOfThings[5], '""' );
 	test.length( inputRow.otherStuff, 3 );
+
+});
+
+Tinytest.add('Spreadsheet To MongoDB Client - .types arrays: with custom separator', function (test) {
+
+	var formFields = [{
+		name: 'ordinaryArray',
+		type: 'array'
+	},
+	{
+		name: 'customSeparatorArray',
+		type: 'array',
+		arraySeparator: '|'
+	}];
+
+	var inputRow = {
+		ordinaryArray: '1,22,334',
+		salary: 5000,
+		somethingElse: 'hej hej',
+		customSeparatorArray: '1,23| avc , cjlk lköj, cool! |2564,S"ome,t,h,ing" , 5 | hey! | 3423'
+	};
+
+	inputRow = SpreadsheetToMongoDB.types.checkAllTypes( inputRow, formFields );
+
+	test.length( inputRow.ordinaryArray, 3 );
+	test.length( inputRow.customSeparatorArray, 5 );
+	test.equal( inputRow.customSeparatorArray[1], 'avc , cjlk lköj, cool!' );
+	test.equal( inputRow.customSeparatorArray[4], 3423 );
+	test.equal( typeof inputRow.customSeparatorArray[4], 'number' );
 
 });
 

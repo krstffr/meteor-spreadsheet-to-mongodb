@@ -58,6 +58,8 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 		// The threeValuesInAnArray will be saved as an array, and it is separated by commas in your spreadsheet.
 		// The arrayMaxLength: 3 makes sure only three items are stored.
 		{ name: 'threeValuesInAnArray', type: 'array', arrayMaxLength: 3 },
+		// The array below will use '|' as a separator instead of ','
+		{ name: 'arrayWithCustomSeparator', arraySeparator: '|' },
 		{ name: 'amount', type: 'number', idpart: true, required: true },
 		{ name: 'sum', type: 'number' },
 		{ name: 'commentUser' },
