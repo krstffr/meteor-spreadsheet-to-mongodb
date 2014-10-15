@@ -1,7 +1,7 @@
 /* CSS declarations go here */
 textarea {
 	width: 100%;
-	min-height: 400px;
+	min-height: 250px;
 }
 pre,
 .SpreadsheetToMongoDB__form {
@@ -22,4 +22,15 @@ pre,
 }
 .SpreadsheetToMongoDB__form__field-name:last-child {
 	border-right: none;
+}
+li {
+	margin-bottom: 1.4em;
+	line-height: 1.2;
+	border-bottom: 2px solid #ddd;
+	padding-bottom: 1.4em;
+}
+li li {
+	margin-bottom: 0;
+	border-bottom: 0;
+	padding-bottom: 0;
 }

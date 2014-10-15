@@ -10,7 +10,8 @@ var newFormOptions = {
   { name: 'REMOVE' },
   { name: 'dateOfBirth', type: 'date' },
   { name: 'money', type: 'number', defaultValue: 5000 },
-  { name: 'favoriteMovies', type: 'array', arrayMaxLength: 3 }
+  { name: 'favoriteMovies', type: 'array', arrayMaxLength: 3 },
+  { name: 'arrayWithCustomSeparator', type: 'array', arraySeparator: '|' }
   ]
 };
 
@@ -32,6 +33,6 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.publish('exampleData', function () {
-    return SillyCollection.find({}, { limit: 25 });
+    return SillyCollection.find({}, { limit: 25, sort: { name: 1 } });
   });
 }
