@@ -40,7 +40,7 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 			// be updated instead of creating a completely new docuemnt.
 			// (This might be super hard to understand. Needs more work.)
 			idpart: true,
-			// What kind of data should be stored? Currently only 'number' and 'date' are supported.
+			// What kind of data should be stored? Currently 'number', 'date' and 'array' are supported.
 			// (All other fields will be saved as strings.)
 			type: 'date',
 			// Is this field required? Meaning: if it's not set when submitting the spreadsheet
