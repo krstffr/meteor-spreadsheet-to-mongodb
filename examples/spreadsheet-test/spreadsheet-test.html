@@ -18,11 +18,13 @@
 	<p>
 		Use this data format: <a href="https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw">https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw/edit#gid=0</a>.
 	</p>
+
 	<p>
 		Just copy data from the form into the textarea below and hit 'Save spreadsheet data'. Voila, data is saved (upserted)!
 	</p>
 
 	<p>
+
 		The form is set up like this (on both the server and the client):
 		<pre>SillyCollection = new Meteor.Collection('sillyCollection');
 
@@ -40,13 +42,20 @@ var newFormOptions = {
 };
 
 SpreadsheetToMongoDB.addForm( newFormOptions );
-</pre>
+		</pre>
+
 	</p>
 
 	<p>
+
 		And to output the form just add this in an HTML template:
+		
 		<pre>&#123;&#123;> spreadsheetToMongodb__form 'sillyExample' &#125;&#125;</pre>
-		The result of this is seen below:
+		
+		The result of this (the &lt;form&gt; with the &lt;textarea&gt;) is seen below.
+		<br />
+		Copy and paste data in the form described in the <a href="https://docs.google.com/spreadsheets/d/1N1zpuBuYGbBKKkI-aiMluuvBkP7rIkh2wG4JbeLdAQw">spreadsheet</a> and see it get saved to the DB!
+
 	</p>
 
 	{{> spreadsheetToMongodb__form 'sillyExample' }}
@@ -57,7 +66,17 @@ SpreadsheetToMongoDB.addForm( newFormOptions );
 
 	{{#each example }}
 
-		<li>{{ name }} loves: {{ favoriteFruit }} and: {{ favoriteVideoGame }}. Born in {{ dateOfBirth }}, he/she now has $ {{ money }} money.</li>
+		<li>
+			{{ name }} loves: {{ favoriteFruit }} and: {{ favoriteVideoGame }}. Born in {{ dateOfBirth }}, he/she now has $ {{ money }} money.
+			{{#if favoriteMovies }}
+			<br />Top three movies:
+			<ol>
+				{{#each favoriteMovies }}
+					<li>{{ this }}</li>
+				{{/each}}
+			</ol>
+			{{/if}}
+		</li>
 
 	{{/each}}
 

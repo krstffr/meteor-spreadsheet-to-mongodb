@@ -9,7 +9,8 @@ var newFormOptions = {
   { name: 'favoriteVideoGame', idpart: true, required: true },
   { name: 'REMOVE' },
   { name: 'dateOfBirth', type: 'date' },
-  { name: 'money', type: 'number', defaultValue: 5000 }
+  { name: 'money', type: 'number', defaultValue: 5000 },
+  { name: 'favoriteMovies', type: 'array', arrayMaxLength: 3 }
   ]
 };
 

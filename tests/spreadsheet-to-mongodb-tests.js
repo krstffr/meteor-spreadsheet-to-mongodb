@@ -107,6 +107,99 @@ Tinytest.add('Spreadsheet To MongoDB - getFormByName( formName )', function (tes
 
 });
 
+Tinytest.add('Spreadsheet To MongoDB Client - .types numbers should be numbers', function (test) {
+
+	var formFields = [{
+		name: 'age',
+		type: 'number'
+	},
+	{
+		name: 'salary',
+		type: 'number'
+	},
+	{
+		name: 'years',
+		type: 'number'
+	}];
+
+	var inputRow = {
+		age: '34',
+		salary: 5000,
+		somethingElse: 'hej hej',
+		years: '400'
+	};
+
+	inputRow = SpreadsheetToMongoDB.types.checkAllTypes( inputRow, formFields );
+
+	test.equal( typeof inputRow.age, 'number' );
+	test.equal( typeof inputRow.salary, 'number' );
+	test.equal( typeof inputRow.years, 'number' );
+
+});
+
+Tinytest.add('Spreadsheet To MongoDB Client - .types dates should be dates', function (test) {
+
+	var formFields = [{
+		name: 'birthDate',
+		type: 'date'
+	},
+	{
+		name: 'deathDate',
+		type: 'date'
+	}];
+
+	var inputRow = {
+		birthDate: '21/04/1984',
+		salary: 5000,
+		somethingElse: 'hej hej',
+		deathDate: '31/12/2056'
+	};
+
+	test.equal( typeof inputRow.birthDate, 'string' );
+	test.equal( typeof inputRow.deathDate, 'string' );
+
+	inputRow = SpreadsheetToMongoDB.types.checkAllTypes( inputRow, formFields );
+
+	test.instanceOf( inputRow.birthDate, Date );
+	test.instanceOf( inputRow.deathDate, Date );
+
+});
+
+Tinytest.add('Spreadsheet To MongoDB Client - .types arrays should be arrays', function (test) {
+
+	var formFields = [{
+		name: 'listOfThings',
+		type: 'array'
+	},
+	{
+		name: 'otherStuff',
+		type: 'array',
+		arrayMaxLength: 3
+	}];
+
+	var inputRow = {
+		listOfThings: '123, Whatever, nice, 564 , 54, ""',
+		salary: 5000,
+		somethingElse: 'hej hej',
+		otherStuff: '123,213,2564,Something'
+	};
+
+	test.equal( typeof inputRow.listOfThings, 'string' );
+	test.equal( typeof inputRow.otherStuff, 'string' );
+
+	inputRow = SpreadsheetToMongoDB.types.checkAllTypes( inputRow, formFields );
+
+	test.instanceOf( inputRow.listOfThings, Array );
+	test.instanceOf( inputRow.otherStuff, Array );
+
+	// Make sure numbers are number, and strings are strings.
+	test.equal( inputRow.listOfThings[0], 123 );
+	test.equal( inputRow.listOfThings[3], 564 );
+	test.equal( inputRow.listOfThings[5], '""' );
+	test.length( inputRow.otherStuff, 3 );
+
+});
+
 if (Meteor.isServer) {
 
 	Tinytest.addAsync('Spreadsheet To MongoDB Server - SpreadsheetToMongoDB/save( collection, formName )', function (test, next) {
@@ -193,46 +286,6 @@ if (Meteor.isClient) {
 
 	});
 
-	Tinytest.add('Spreadsheet To MongoDB Client - handleInput.forceNumbers( numberFields, inputRow )', function (test) {
-
-		var numberFields = ['age', 'salary', 'years'];
-
-		var inputRow = {
-			age: '34',
-			salary: 5000,
-			somethingElse: 'hej hej',
-			years: '400'
-		};
-
-		inputRow = SpreadsheetToMongoDB.handleInput.forceNumbers( numberFields, inputRow );
-
-		test.equal( typeof inputRow.age, 'number' );
-		test.equal( typeof inputRow.salary, 'number' );
-		test.equal( typeof inputRow.years, 'number' );
-
-	});
-
-	Tinytest.add('Spreadsheet To MongoDB Client - handleInput.forceDates( dateFields, inputRow )', function (test) {
-
-		var dateFields = ['birthDate', 'deathDate'];
-
-		var inputRow = {
-			birthDate: '21/04/1984',
-			salary: 5000,
-			somethingElse: 'hej hej',
-			deathDate: '31/12/2056'
-		};
-
-		test.equal( typeof inputRow.birthDate, 'string' );
-		test.equal( typeof inputRow.deathDate, 'string' );
-
-		inputRow = SpreadsheetToMongoDB.handleInput.forceDates( dateFields, inputRow );
-
-		test.instanceOf( inputRow.birthDate, Date );
-		test.instanceOf( inputRow.deathDate, Date );
-
-	});
-
 	Tinytest.add('Spreadsheet To MongoDB Client - handleInput.createId( _idFields, inputRow, currentForm )', function (test) {
 
 		var inputRow1 = {
@@ -282,23 +335,23 @@ if (Meteor.isClient) {
 
 	});
 
-	Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName )', function (test) {
-		
-		var input = 'row1.string\t500\t1/18/1901\trow1.REMOVE\trow1.string2\trow1.ANEXTRAVALUEWHICHDISAPPEARS\nrow2.string\t800\t10/31/2054\trow2.REMOVE\trow2.string2\n\n\nrow5.string\t5684800\t12/31/3954\trow5.REMOVE\trow5.string2\trow5.anExtraField?';
+Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName )', function (test) {
 
-		var returnedInput = SpreadsheetToMongoDB.saveData( input, yetAnotherFormOptions.formName );
+	var input = 'row1.string\t500\t1/18/1901\trow1.REMOVE\trow1.string2\trow1.ANEXTRAVALUEWHICHDISAPPEARS\nrow2.string\t800\t10/31/2054\trow2.REMOVE\trow2.string2\n\n\nrow5.string\t5684800\t12/31/3954\trow5.REMOVE\trow5.string2\trow5.anExtraField?';
 
-		test.equal( returnedInput[1].string, 'row2.string' );
-		test.equal( returnedInput[0].number, 500 );
-		test.instanceOf( returnedInput[1].date, Date );
-		test.isUndefined( returnedInput[0].REMOVE );
-		test.equal( returnedInput[1].string2, 'row2.string2' );
-		test.isUndefined( returnedInput[3].string2 );
-		test.isUndefined( returnedInput[3].REMOVE );
-		test.isUndefined( returnedInput[3].date );
-		test.isUndefined( returnedInput[2].number );
-		test.equal( returnedInput[4].string, 'row5.string' );
+	var returnedInput = SpreadsheetToMongoDB.saveData( input, yetAnotherFormOptions.formName );
 
-	});
+	test.equal( returnedInput[1].string, 'row2.string' );
+	test.equal( returnedInput[0].number, 500 );
+	test.instanceOf( returnedInput[1].date, Date );
+	test.isUndefined( returnedInput[0].REMOVE );
+	test.equal( returnedInput[1].string2, 'row2.string2' );
+	test.isUndefined( returnedInput[3].string2 );
+	test.isUndefined( returnedInput[3].REMOVE );
+	test.isUndefined( returnedInput[3].date );
+	test.isUndefined( returnedInput[2].number );
+	test.equal( returnedInput[4].string, 'row5.string' );
+
+});
 
 }
