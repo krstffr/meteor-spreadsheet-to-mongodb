@@ -75,3 +75,37 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 `{{> spreadsheetToMongodb__form 'bankStatements' }}`
 - Now you've got the form in your HTML, and when you copy/paste the spreadsheet data it will be stored in your mongodb.
 - If you've set up fields with the `idpart: true` key then you can paste the data multiple times and be sure that you only get one doc/row in your spreadsheet, as the saving is done using .upsert(). (This might still be quite hard to grasp.)
+
+## Defining your own save callback
+
+Maybe you don't want the default save behaviour to execute when the user clicks the save button (which inserts all the rows from the spreadsheet into the MongoDB collection you've provided). Maybe you don't want to save the data at all. In these cases you've got two options: **1.** provide your own callback for the saved data and **2.** override the default save-to-DB behaviour.
+
+**Provied your own save callback**
+
+To run your own callback on the spreadsheet data, provide a ```.saveCallback( input )``` method to the form options object. The callback **must** return an array of your transformed data. Like this:
+
+```javascript
+
+	formOptions.saveCallback = function ( input ) {
+		input = _(input).map( function( spreadsheetRow ) {
+			// Math.floor the sum field
+			spreadsheetRow.sum = Math.floor( spreadsheetRow.sum );
+			return spreadsheetRow;
+		});
+		// You must always return the data you've modified
+		return input;
+	};
+
+```
+
+The returned ```input``` array will be saved to the provided MongoDB collection.
+
+**Override the default save-to-DB behaviour**
+
+If you don't want the data to be inserted into MongoDB, just provide add the ```.saveToDB = false``` field to your form options. This way you can do whatever you want to the data in your saveCallback method instead of saving it to MongoDB. Just add this:
+
+```javascript
+
+	formOptions.saveToDB = false;
+
+```

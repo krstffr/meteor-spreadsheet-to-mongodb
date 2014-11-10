@@ -1,3 +1,12 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+/* <3 Paul Irish */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 /* CSS declarations go here */
 textarea {
 	width: 100%;
@@ -33,4 +42,9 @@ li li {
 	margin-bottom: 0;
 	border-bottom: 0;
 	padding-bottom: 0;
+}
+.after-save-callback {
+	padding: 2em;
+	font-size: 1.3em;
+	color: #0c5;
 }

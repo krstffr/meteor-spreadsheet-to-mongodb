@@ -364,23 +364,105 @@ if (Meteor.isClient) {
 
 	});
 
-Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName )', function (test) {
+	Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName )', function (test) {
 
-	var input = 'row1.string\t500\t1/18/1901\trow1.REMOVE\trow1.string2\trow1.ANEXTRAVALUEWHICHDISAPPEARS\nrow2.string\t800\t10/31/2054\trow2.REMOVE\trow2.string2\n\n\nrow5.string\t5684800\t12/31/3954\trow5.REMOVE\trow5.string2\trow5.anExtraField?';
+		var input = 'row1.string\t500\t1/18/1901\trow1.REMOVE\trow1.string2\trow1.ANEXTRAVALUEWHICHDISAPPEARS\nrow2.string\t800\t10/31/2054\trow2.REMOVE\trow2.string2\n\n\nrow5.string\t5684800\t12/31/3954\trow5.REMOVE\trow5.string2\trow5.anExtraField?';
 
-	var returnedInput = SpreadsheetToMongoDB.saveData( input, yetAnotherFormOptions.formName );
+		var returnedInput = SpreadsheetToMongoDB.saveData( input, yetAnotherFormOptions.formName );
 
-	test.equal( returnedInput[1].string, 'row2.string' );
-	test.equal( returnedInput[0].number, 500 );
-	test.instanceOf( returnedInput[1].date, Date );
-	test.isUndefined( returnedInput[0].REMOVE );
-	test.equal( returnedInput[1].string2, 'row2.string2' );
-	test.isUndefined( returnedInput[3].string2 );
-	test.isUndefined( returnedInput[3].REMOVE );
-	test.isUndefined( returnedInput[3].date );
-	test.isUndefined( returnedInput[2].number );
-	test.equal( returnedInput[4].string, 'row5.string' );
+		test.equal( returnedInput[1].string, 'row2.string' );
+		test.equal( returnedInput[0].number, 500 );
+		test.instanceOf( returnedInput[1].date, Date );
+		test.isUndefined( returnedInput[0].REMOVE );
+		test.equal( returnedInput[1].string2, 'row2.string2' );
+		test.isUndefined( returnedInput[3].string2 );
+		test.isUndefined( returnedInput[3].REMOVE );
+		test.isUndefined( returnedInput[3].date );
+		test.isUndefined( returnedInput[2].number );
+		test.equal( returnedInput[4].string, 'row5.string' );
 
-});
+	});
+
+	Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName ) w/ custom callback should throw error if not function, also saveToDB should be bool', function (test) {
+		
+		var wrongFormOptions = {
+			// All fields are correct EXCEPT the saveCallback
+			formName: 'This is correct',
+			collection: TestCollection,
+			fields: [],
+			saveCallback: 'ERROR: this is a string not a function'
+		};
+
+		test.throws(function () {
+			// With the wrong formName type
+			SpreadsheetToMongoDB.addForm( wrongFormOptions );
+		});
+
+		// Now let's try the saveToDB field, which has to be a boolean!
+		wrongFormOptions.saveCallback = function( input ) { return input; };
+		wrongFormOptions.saveToDB = function( input ) { return input; };
+
+		test.throws(function () {
+			// With the wrong formName type
+			SpreadsheetToMongoDB.addForm( wrongFormOptions );
+		});
+
+	});
+
+	Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName ) custom callback should return array', function (test) {
+
+		var formOptionsWithSaveCallbackWhichReturnWrongType = _.clone( correctFormOptions );
+		formOptionsWithSaveCallbackWhichReturnWrongType.formName = 'formOptionsWithSaveCallbackWhichReturnWrongType';
+		formOptionsWithSaveCallbackWhichReturnWrongType.saveToDB = false;
+		formOptionsWithSaveCallbackWhichReturnWrongType.saveCallback = function ( input ) {
+			return 'string';
+		};
+		// With the wrong formName type
+		SpreadsheetToMongoDB.addForm( formOptionsWithSaveCallbackWhichReturnWrongType );
+		
+		var input = 'asdf\tfavoriteFruit is a banana \tSuper Mario\tREMOVE this!\t1984/10/07\t500\nname2\t Apple (not computer but fruit) \tFinal Fintasy VII\tREMOVE this!\t2015/01/01\t56815';
+
+		test.throws(function () {
+			SpreadsheetToMongoDB.saveData( input, formOptionsWithSaveCallbackWhichReturnWrongType.formName );
+		});
+
+	});
+
+	Tinytest.add('Spreadsheet To MongoDB Client - saveData( input, formName ) custom callback', function (test) {
+
+		var formOptionsWithSaveCallback = _.clone( correctFormOptions );
+		formOptionsWithSaveCallback.formName = 'formWithCallback';
+		formOptionsWithSaveCallback.saveToDB = false;
+		formOptionsWithSaveCallback.saveCallback = function ( input ) {
+			input = _(input).map( function( row ) {
+				// Just transform values somehow
+				return {
+					transformedName: 'New name: ' + row.name,
+					transformedMoney: ( row.money / 2 )
+				};
+			});
+			return input;
+		};
+
+		// Add the form
+		SpreadsheetToMongoDB.addForm( formOptionsWithSaveCallback );
+
+		var currentForm = SpreadsheetToMongoDB.getFormByName( formOptionsWithSaveCallback.formName );
+
+		var name1 = 'name';
+		var name2 = ' another name';
+		var money1 = 1000;
+		var money2 = '9999999';
+
+		var input = name1+'\tfavoriteFruit is a banana \tSuper Mario\tREMOVE this!\t1984/10/07\t'+money1+'\n'+name2+'\t Apple (not computer but fruit) \tFinal Fintasy VII\tREMOVE this!\t2015/01/01\t'+money2;
+
+		var returnedInput = SpreadsheetToMongoDB.saveData( input, formOptionsWithSaveCallback.formName );
+
+		test.equal( returnedInput[0].transformedName, 'New name: ' + name1 );
+		test.equal( returnedInput[0].transformedMoney, ( money1 / 2 ) );
+		test.equal( returnedInput[1].transformedName, 'New name: ' + name2 );
+		test.equal( returnedInput[1].transformedMoney, ( money2 / 2 ) );
+
+	});
 
 }
