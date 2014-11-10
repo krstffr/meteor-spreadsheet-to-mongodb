@@ -17,58 +17,58 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 - Set some options for the new "form" which will accept your spreadsheet data:
 ```javascript
 
-	// This is for a spreadsheet holding bank statements (if that's what they're called in english).
-	// We push it into the options array.
-	var formOptions = {
-		// Set a name for this specific "spreadsheet"
-		formName: 'bankStatements',
-		// Pass the collection in which you want to store the data inside
-		// Note! This collection has to be defined by you!
-		collection: BankStatements,
-		// Should we pass part of the current users _id to the documents _id?
-		// (This one needs more explaining!)
-		addUserIdToId: true,
-		// The fields, in the order they appear in the spreadsheet.
-		fields: [
-		{
-			// This will be the key for the stored value
-			name: 'date',
-			// Every field which gets idpart set to true will be part of a hashed _id key for the document.
-			// So: if you've got three fields for every spreadsheet row which will always remain constant,
-			// you can use these for generating the _id for the document. This will make sure that every time
-			// you update the spreadsheet and copy/paste the data into the textarea, the same document will
-			// be updated instead of creating a completely new docuemnt.
-			// (This might be super hard to understand. Needs more work.)
-			idpart: true,
-			// What kind of data should be stored? Currently 'number', 'date' and 'array' are supported.
-			// (All other fields will be saved as strings.)
-			type: 'date',
-			// Is this field required? Meaning: if it's not set when submitting the spreadsheet
-			// data an error will be thrown.
-			required: true,
-			// This sets a default value for docs.
-			// (In this case, it kind of negates the use of required: true as if there is no value set then
-			// this deafult value will be set.)
-			defaultValue: '2014-01-01'
-		},
-		{ name: 'commentBank', idpart: true, required: true },
-		// For cols in your spreadsheet which you don't want to store, just set the name to 'REMOVE'
-		// and they won't be stored.
-		{ name: 'REMOVE' },
-		// The threeValuesInAnArray will be saved as an array, and it is separated by commas in your spreadsheet.
-		// The arrayMaxLength: 3 makes sure only three items are stored.
-		{ name: 'threeValuesInAnArray', type: 'array', arrayMaxLength: 3 },
-		// The array below will use '|' as a separator instead of ','
-		{ name: 'arrayWithCustomSeparator', arraySeparator: '|' },
-		{ name: 'amount', type: 'number', idpart: true, required: true },
-		{ name: 'sum', type: 'number' },
-		{ name: 'commentUser' },
-		{ name: 'REMOVE' }
-		]
-	};
-	
-	// Add the form!
-	SpreadsheetToMongoDB.addForm( formOptions );
+// This is for a spreadsheet holding bank statements (if that's what they're called in english).
+// We push it into the options array.
+var formOptions = {
+	// Set a name for this specific "spreadsheet"
+	formName: 'bankStatements',
+	// Pass the collection in which you want to store the data inside
+	// Note! This collection has to be defined by you!
+	collection: BankStatements,
+	// Should we pass part of the current users _id to the documents _id?
+	// (This one needs more explaining!)
+	addUserIdToId: true,
+	// The fields, in the order they appear in the spreadsheet.
+	fields: [
+	{
+		// This will be the key for the stored value
+		name: 'date',
+		// Every field which gets idpart set to true will be part of a hashed _id key for the document.
+		// So: if you've got three fields for every spreadsheet row which will always remain constant,
+		// you can use these for generating the _id for the document. This will make sure that every time
+		// you update the spreadsheet and copy/paste the data into the textarea, the same document will
+		// be updated instead of creating a completely new docuemnt.
+		// (This might be super hard to understand. Needs more work.)
+		idpart: true,
+		// What kind of data should be stored? Currently 'number', 'date' and 'array' are supported.
+		// (All other fields will be saved as strings.)
+		type: 'date',
+		// Is this field required? Meaning: if it's not set when submitting the spreadsheet
+		// data an error will be thrown.
+		required: true,
+		// This sets a default value for docs.
+		// (In this case, it kind of negates the use of required: true as if there is no value set then
+		// this deafult value will be set.)
+		defaultValue: '2014-01-01'
+	},
+	{ name: 'commentBank', idpart: true, required: true },
+	// For cols in your spreadsheet which you don't want to store, just set the name to 'REMOVE'
+	// and they won't be stored.
+	{ name: 'REMOVE' },
+	// The threeValuesInAnArray will be saved as an array, and it is separated by commas in your spreadsheet.
+	// The arrayMaxLength: 3 makes sure only three items are stored.
+	{ name: 'threeValuesInAnArray', type: 'array', arrayMaxLength: 3 },
+	// The array below will use '|' as a separator instead of ','
+	{ name: 'arrayWithCustomSeparator', arraySeparator: '|' },
+	{ name: 'amount', type: 'number', idpart: true, required: true },
+	{ name: 'sum', type: 'number' },
+	{ name: 'commentUser' },
+	{ name: 'REMOVE' }
+	]
+};
+
+// Add the form!
+SpreadsheetToMongoDB.addForm( formOptions );
 
 ```
 - Now you're all set up. Now you just need the actual form to paste your spreadsheets into. Use this handlebars helper to get the field (use the formName to select what form to get!):
@@ -86,15 +86,15 @@ To run your own callback on the spreadsheet data, provide a ```.saveCallback( in
 
 ```javascript
 
-	formOptions.saveCallback = function ( input ) {
-		input = _(input).map( function( spreadsheetRow ) {
-			// Math.floor the sum field
-			spreadsheetRow.sum = Math.floor( spreadsheetRow.sum );
-			return spreadsheetRow;
-		});
-		// You must always return the data you've modified
-		return input;
-	};
+formOptions.saveCallback = function ( input ) {
+	input = _(input).map( function( spreadsheetRow ) {
+		// Math.floor the sum field
+		spreadsheetRow.sum = Math.floor( spreadsheetRow.sum );
+		return spreadsheetRow;
+	});
+	// You must always return the data you've modified
+	return input;
+};
 
 ```
 
@@ -106,6 +106,6 @@ If you don't want the data to be inserted into MongoDB, just provide add the ```
 
 ```javascript
 
-	formOptions.saveToDB = false;
+formOptions.saveToDB = false;
 
 ```
