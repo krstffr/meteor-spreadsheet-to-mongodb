@@ -12,7 +12,7 @@ Use this spreadsheet format for adding data: https://docs.google.com/spreadsheet
 
 ## Here's how to make it work.
 
-- Install the package: `mrt add krstffr:spreadsheet-to-mongodb`.
+- Install the package: `meteor add krstffr:spreadsheet-to-mongodb`.
 - Create a file which is available on both the server and the client.
 - Set some options for the new "form" which will accept your spreadsheet data:
 ```javascript
